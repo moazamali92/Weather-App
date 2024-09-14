@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            margin: 0;
+        }
+        form {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        label {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        h3 {
+            font-size: 1.2em;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <form onsubmit="getWeather(); return false;">
+        <label for="cityname">City Name:</label>
+        <input type="text" name="cityname" id="temp1" placeholder="Enter your City Name" required>
+        <button type="submit">Check Weather</button>
+    </form>
+
+    <h3 id="result"></h3>
+
+    <script>
+        function getWeather() {
+            let cityname1 = document.querySelector("#temp1").value;
+
+            axios.get(`https://api.weatherapi.com/v1/current.json?key=10c922a628f14554a90185202241209&q=${cityname1}&aqi=yes`)
+                .then(function (response) {
+                    let tempC = response.data.current.temp_c;
+                    let tempF = response.data.current.temp_f;
+                    let city = response.data.location.name;
+                    let windSpeed = response.data.current.wind_kph; // Wind speed in km/h
+                    let humidity = response.data.current.humidity; // Humidity percentage
+
+                    document.querySelector("#result").innerHTML = `The temperature in ${city} is ${tempC}°C and ${tempF}°F. The wind speed is ${windSpeed} km/h and the humidity is ${humidity}%.`;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    document.querySelector("#result").innerHTML = "Sorry, there was an error retrieving the weather information.";
+                });
+        }
+    </script> 
+
+</body>
+</html>
+
